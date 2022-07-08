@@ -1,4 +1,4 @@
-package app;6
+package app;
 
 /** @author Ahmed Khoumsi */
 

@@ -15,6 +15,9 @@ public class AnalLex {
   public AnalLex( ) {  // arguments possibles
     //
   }
+  public AnalLex(String s) {
+    
+  }
 
 
 /** resteTerminal() retourne :
