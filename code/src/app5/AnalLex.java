@@ -1,4 +1,4 @@
-package app6;
+package app5;
 
 /** @author Ahmed Khoumsi */
 
@@ -9,49 +9,51 @@ public class AnalLex {
 // Attributs
 //  ...
 
-	
-/** Constructeur pour l'initialisation d'attribut(s)
- */
+
+  /** Constructeur pour l'initialisation d'attribut(s)
+   */
   public AnalLex( ) {  // arguments possibles
     //
   }
   public AnalLex(String s) {
-    
+
   }
 
 
-/** resteTerminal() retourne :
-      false  si tous les terminaux de l'expression arithmetique ont ete retournes
-      true s'il reste encore au moins un terminal qui n'a pas ete retourne 
- */
+  /** resteTerminal() retourne :
+   false  si tous les terminaux de l'expression arithmetique ont ete retournes
+   true s'il reste encore au moins un terminal qui n'a pas ete retourne
+   */
   public boolean resteTerminal( ) {
     //
+    return false;
   }
-  
-  
-/** prochainTerminal() retourne le prochain terminal
-      Cette methode est une implementation d'un AEF
- */  
+
+
+  /** prochainTerminal() retourne le prochain terminal
+   Cette methode est une implementation d'un AEF
+   */
   public Terminal prochainTerminal( ) {
-     //
+    //
+    return null;
   }
 
- 
-/** ErreurLex() envoie un message d'erreur lexicale
- */ 
-  public void ErreurLex(String s) {	
-     //
+
+  /** ErreurLex() envoie un message d'erreur lexicale
+   */
+  public void ErreurLex(String s) {
+    //
   }
 
-  
+
   //Methode principale a lancer pour tester l'analyseur lexical
   public static void main(String[] args) {
     String toWrite = "";
     System.out.println("Debut d'analyse lexicale");
     if (args.length == 0){
-    args = new String [2];
-            args[0] = "ExpArith.txt";
-            args[1] = "ResultatLexical.txt";
+      args = new String [2];
+      args[0] = "ExpArith.txt";
+      args[1] = "ResultatLexical.txt";
     }
     Reader r = new Reader(args[0]);
 
@@ -61,10 +63,11 @@ public class AnalLex {
     Terminal t = null;
     while(lexical.resteTerminal()){
       t = lexical.prochainTerminal();
-      toWrite +=t.chaine + "\n" ;  // toWrite contient le resultat
+      toWrite += t.GetChaine() + "\n" ;  // toWrite contient le resultat
     }				   //    d'analyse lexicale
     System.out.println(toWrite); 	// Ecriture de toWrite sur la console
     Writer w = new Writer(args[1],toWrite); // Ecriture de toWrite dans fichier args[1]
     System.out.println("Fin d'analyse lexicale");
   }
 }
+

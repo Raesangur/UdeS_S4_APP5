@@ -1,4 +1,4 @@
-package app6;
+package app5;
 
 /**
  * <p>Title: APP6 Compilation</p>
@@ -10,8 +10,8 @@ package app6;
  */
 import java.io.FileInputStream;
 /** Classe permettant d'ouvrir et de faire la Lecture d'un fichier
-  *
-  */
+ *
+ */
 public class Reader {
   String _str;
 
@@ -42,7 +42,7 @@ public class Reader {
    * @return La string contenu dans le fichier
    */
 
-public String toString(){
+  public String toString(){
     return _str;
   }
 

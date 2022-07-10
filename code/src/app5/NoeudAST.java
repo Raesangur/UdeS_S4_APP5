@@ -1,4 +1,4 @@
-package app6;
+package app5;
 
 /** @author Ahmed Khoumsi */
 
@@ -14,20 +14,26 @@ public class NoeudAST extends ElemAST {
     //
   }
 
- 
+
   /** Evaluation de noeud d'AST
    */
   public int EvalAST( ) {
-     //
+    //
+    return 0;
   }
 
 
   /** Lecture de noeud d'AST
    */
   public String LectAST( ) {
-     //
+    //
+    return null;
+  }
+
+  @Override
+  public ElemAST AnalSynt() {
+    return null;
   }
 
 }
-
 

@@ -1,4 +1,4 @@
-package app6;
+package app5;
 
 /** @author Ahmed Khoumsi */
 
@@ -9,8 +9,8 @@ public class FeuilleAST extends ElemAST {
   // Attribut(s)
 
 
-/**Constructeur pour l'initialisation d'attribut(s)
- */
+  /**Constructeur pour l'initialisation d'attribut(s)
+   */
   public FeuilleAST( ) {  // avec arguments
     //
   }
@@ -20,13 +20,20 @@ public class FeuilleAST extends ElemAST {
    */
   public int EvalAST( ) {
     //
+    return 0;
   }
 
 
- /** Lecture de chaine de caracteres correspondant a la feuille d'AST
-  */
+  /** Lecture de chaine de caracteres correspondant a la feuille d'AST
+   */
   public String LectAST( ) {
     //
+    return null;
+  }
+
+  @Override
+  public ElemAST AnalSynt() {
+    return null;
   }
 
 }

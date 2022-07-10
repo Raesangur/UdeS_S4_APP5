@@ -1,4 +1,4 @@
-package app6;
+package app5;
 
 /**
  * <p>Title: APP6 Compilation</p>
@@ -14,8 +14,8 @@ import java.io.FileOutputStream;
 public class Writer {
   String _str;
 
-  /** Constructeur prenant en parametre le nom du fichier et de la donnee, et 
-    * inserer celle-ci dans celui-la
+  /** Constructeur prenant en parametre le nom du fichier et de la donnee, et
+   * inserer celle-ci dans celui-la
    */
 
   public Writer(String name, String data) {

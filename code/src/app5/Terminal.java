@@ -1,4 +1,4 @@
-package app6;
+package app5;
 
 /** @author Ahmed Khoumsi */
 
@@ -10,13 +10,17 @@ public class Terminal {
 
 // Constantes et attributs
 //  ....
+  private String chaine;
 
 
-/** Un ou deux constructeurs (ou plus, si vous voulez)
-  *   pour l'initalisation d'attributs 
- */	
+  /** Un ou deux constructeurs (ou plus, si vous voulez)
+   *   pour l'initalisation d'attributs
+   */
   public Terminal( ) {   // arguments possibles
-     //
+    //
   }
 
+  public String GetChaine() {
+    return chaine;
+  }
 }
