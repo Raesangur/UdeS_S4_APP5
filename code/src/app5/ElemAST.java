@@ -24,4 +24,6 @@ public abstract class ElemAST {
     //
   }
 
+  public abstract String toString();
+
 }

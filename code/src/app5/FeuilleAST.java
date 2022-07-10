@@ -2,12 +2,14 @@ package app5;
 
 /** @author Ahmed Khoumsi */
 
+import app5.Operandes.Operande;
+
 /** Classe representant une feuille d'AST
  */
 public class FeuilleAST extends ElemAST {
 
   // Attribut(s)
-
+  protected Operande operande;
 
   /**Constructeur pour l'initialisation d'attribut(s)
    */
@@ -19,8 +21,8 @@ public class FeuilleAST extends ElemAST {
   /** Evaluation de feuille d'AST
    */
   public int EvalAST( ) {
-    //
-    return 0;
+
+    return operande.EvalElem();
   }
 
 
@@ -31,8 +33,17 @@ public class FeuilleAST extends ElemAST {
     return null;
   }
 
+  public Boolean CanEval() {
+    return operande.GetCanEval();
+  }
+
   @Override
   public ElemAST AnalSynt() {
+    return null;
+  }
+
+  @Override
+  public String toString() {
     return null;
   }
 
