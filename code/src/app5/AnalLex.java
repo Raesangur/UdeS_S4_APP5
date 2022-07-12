@@ -66,7 +66,6 @@ public class AnalLex {
         }
         else if(Character.isDigit(c)) {
             etat = EtatLex.FINAL_LITERAL;
-            terminal += c;
         }
         else if(operateurs.contains(c)) {
             etat = EtatLex.FINAL_OPERATEUR;
@@ -83,7 +82,7 @@ public class AnalLex {
         if (c != '+') {
             // not ++
             pointeurLecture--;
-            return new Addition(c + "");
+            return new Addition(terminal.substring(0, terminal.length() - 1));
         }
         etat = EtatLex.FINAL_OPERATEUR;
         return null;
@@ -92,13 +91,13 @@ public class AnalLex {
     private Operateur analFinalOperateur(char c) {
         switch (c) {
             case '-':
-                return new Soustraction(c + "");
+                return new Soustraction(terminal);
             case '/':
-                return new Division(c + "");
+                return new Division(terminal);
             case '*':
-                return new Multiplication(c + "");
+                return new Multiplication(terminal);
             case '+':
-                return new PostFixPlus(c + "");
+                return new PostFixPlus(terminal);
             default:
                 return null;
         }
@@ -109,9 +108,9 @@ public class AnalLex {
             etat = EtatLex.INTERMEDIAIRE_IDENTIFIANT;
         } else if(Character.isDigit(c) || operateurs.contains(c)) {
             pointeurLecture--;
-            return new Identifiant(terminal);
+            return new Identifiant(terminal.substring(0, terminal.length() - 1));
         }
-        terminal += c;
+//        terminal += c;
         return null;
     }
 
@@ -128,10 +127,10 @@ public class AnalLex {
     private Operande analFinalLiteral(char c) {
         if(Character.isLetter(c) || operateurs.contains(c) || c == '+') {
             pointeurLecture--;
-            return new Literal(terminal);
+            return new Literal(terminal.substring(0, terminal.length() - 1));
         }
 
-        terminal += c;
+//        terminal += c;
         return null;
     }
 
@@ -145,7 +144,7 @@ public class AnalLex {
         // TODO : faire attention boucles infinis
         while(true) {
             char c = s.charAt(pointeurLecture++);
-//            terminal += c;
+            terminal += c;
     
             switch (etat) {
     
