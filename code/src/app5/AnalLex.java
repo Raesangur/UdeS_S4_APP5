@@ -54,7 +54,8 @@ public class AnalLex {
      true s'il reste encore au moins un terminal qui n'a pas ete retourne
      */
     public boolean resteTerminal( ) {
-        return pointeurLecture != (s.length() - 1);
+        int test = s.length(); // pour tester
+        return pointeurLecture <= (s.length() - 1);
     }
 
     private void analInitial(char c) throws AnalLexErreur {
@@ -106,11 +107,13 @@ public class AnalLex {
     private Operande analFinalIdentifiant(char c) {
         if (c == '_') {
             etat = EtatLex.INTERMEDIAIRE_IDENTIFIANT;
-        } else if(Character.isDigit(c) || operateurs.contains(c)) {
+        } else if(Character.isDigit(c) || operateurs.contains(c) || c == '+') {
             pointeurLecture--;
             return new Identifiant(terminal.substring(0, terminal.length() - 1));
         }
-//        terminal += c;
+
+        if(!resteTerminal())
+            return new Identifiant(terminal);
         return null;
     }
 
@@ -130,7 +133,9 @@ public class AnalLex {
             return new Literal(terminal.substring(0, terminal.length() - 1));
         }
 
-//        terminal += c;
+        if(!resteTerminal())
+            return new Literal(terminal);
+
         return null;
     }
 
@@ -140,12 +145,15 @@ public class AnalLex {
     public Terminal prochainTerminal() throws AnalLexErreur {
         terminal = "";
         etat = EtatLex.INITIAL;
+        char c = ' ';
 
         // TODO : faire attention boucles infinis
         while(true) {
-            char c = s.charAt(pointeurLecture++);
-            terminal += c;
-    
+            if(resteTerminal()) {
+                c = s.charAt(pointeurLecture++);
+                terminal += c;
+            }
+
             switch (etat) {
     
                 case INITIAL:
