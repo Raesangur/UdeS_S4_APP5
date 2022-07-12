@@ -88,18 +88,18 @@ public class AnalLex {
         return null;
     }
 
-    private Operateur analFinalOperateur(char c) {
-        switch (c) {
+    private Operateur analFinalOperateur() throws AnalLexErreur {
+        switch (s.charAt(--pointeurLecture - 1)) {
             case '-':
-                return new Soustraction(terminal);
+                return new Soustraction(terminal.substring(0, terminal.length() - 1));
             case '/':
-                return new Division(terminal);
+                return new Division(terminal.substring(0, terminal.length() - 1));
             case '*':
-                return new Multiplication(terminal);
+                return new Multiplication(terminal.substring(0, terminal.length() - 1));
             case '+':
-                return new PostFixPlus(terminal);
+                return new PostFixPlus(terminal.substring(0, terminal.length() - 1));
             default:
-                return null;
+                throw new AnalLexErreur("Caractere incompatible : " + s.charAt(pointeurLecture), s, pointeurLecture);
         }
     }
 
@@ -121,13 +121,13 @@ public class AnalLex {
             etat = EtatLex.FINAL_IDENTIFIANT;
         } else if(c == '_') {
             throw new AnalLexErreur("Caractere invalide double __: " + c, s, pointeurLecture);
-        } else if(Character.isDigit(c) || operateurs.contains(c) || c == '+') {
+        } else if(!Character.isLetter(c)) {
             throw new AnalLexErreur("Caractere invalide impossible de finir avec un _: " + c, s, pointeurLecture);
         }
     }
 
     private Operande analFinalLiteral(char c) {
-        if(Character.isLetter(c) || operateurs.contains(c) || c == '+') {
+        if(!Character.isDigit(c)) {
             pointeurLecture--;
             return new Literal(terminal.substring(0, terminal.length() - 1));
         }
@@ -165,7 +165,7 @@ public class AnalLex {
                     break;
                 }
                 case FINAL_OPERATEUR: {
-                    Operateur opt = analFinalOperateur(c);
+                    Operateur opt = analFinalOperateur();
                     if(opt != null) return opt;
                     break;
                 }
