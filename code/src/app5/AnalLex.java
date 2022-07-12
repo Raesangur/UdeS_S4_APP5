@@ -1,9 +1,13 @@
 package app5;
 
+import java.io.CharConversionException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import app5.Operandes.*;
 import app5.Operateurs.*;
+
+import javax.crypto.spec.ChaCha20ParameterSpec;
 
 /** @author Ahmed Khoumsi */
 
@@ -40,14 +44,8 @@ public class AnalLex {
         pointeurLecture = 0;
         etat = EtatLex.INITIAL;
 
-        operateurs.add(new Character('-'));
-        operateurs.add(new Character('*'));
-        operateurs.add(new Character('/'));
-        operateurs.add(new Character('('));
-        operateurs.add(new Character(')'));
-
-//        Character[] ops = new Character[] {'-', '*', '/', '(', ')'};
-//        operateurs = Arrays.asList(ops);
+        Character[] ops = new Character[] {'-', '*', '/', '(', ')'};
+        operateurs.addAll(Arrays.asList(ops));
     }
 
 
@@ -59,13 +57,16 @@ public class AnalLex {
         return pointeurLecture != (s.length() - 1);
     }
 
-
     private void analInitial(char c) throws AnalLexErreur {
         if (Character.isLetter(c)) {
+            if(Character.isUpperCase(c))
+                throw new AnalLexErreur("Caractere initial est une minuscule : " + c, s, pointeurLecture);
             etat = EtatLex.FINAL_IDENTIFIANT;
+            terminal += c;
         }
         else if(Character.isDigit(c)) {
             etat = EtatLex.FINAL_LITERAL;
+            terminal += c;
         }
         else if(operateurs.contains(c)) {
             etat = EtatLex.FINAL_OPERATEUR;
@@ -78,45 +79,104 @@ public class AnalLex {
         }
     }
 
-    private void analIntermediairePlus(char c) {
-      
+    private Operateur analIntermediairePlus(char c) {
+        if (c != '+') {
+            // not ++
+            pointeurLecture--;
+            return new Addition(c + "");
+        }
+        etat = EtatLex.FINAL_OPERATEUR;
+        return null;
     }
 
-  /** prochainTerminal() retourne le prochain terminal
-   Cette methode est une implementation d'un AEF
-   */
-    public Terminal prochainTerminal( ) throws AnalLexErreur {
+    private Operateur analFinalOperateur(char c) {
+        switch (c) {
+            case '-':
+                return new Soustraction(c + "");
+            case '/':
+                return new Division(c + "");
+            case '*':
+                return new Multiplication(c + "");
+            case '+':
+                return new PostFixPlus(c + "");
+            default:
+                return null;
+        }
+    }
+
+    private Operande analFinalIdentifiant(char c) {
+        if (c == '_') {
+            etat = EtatLex.INTERMEDIAIRE_IDENTIFIANT;
+        } else if(Character.isDigit(c) || operateurs.contains(c)) {
+            pointeurLecture--;
+            return new Identifiant(terminal);
+        }
+        terminal += c;
+        return null;
+    }
+
+    private void analIntermediaireIdentifiant(char c) throws AnalLexErreur {
+        if(Character.isLetter(c)) {
+            etat = EtatLex.FINAL_IDENTIFIANT;
+        } else if(c == '_') {
+            throw new AnalLexErreur("Caractere invalide double __: " + c, s, pointeurLecture);
+        } else if(Character.isDigit(c) || operateurs.contains(c) || c == '+') {
+            throw new AnalLexErreur("Caractere invalide impossible de finir avec un _: " + c, s, pointeurLecture);
+        }
+    }
+
+    private Operande analFinalLiteral(char c) {
+        if(Character.isLetter(c) || operateurs.contains(c) || c == '+') {
+            pointeurLecture--;
+            return new Literal(terminal);
+        }
+
+        terminal += c;
+        return null;
+    }
+
+    /** prochainTerminal() retourne le prochain terminal
+    Cette methode est une implementation d'un AEF
+    */
+    public Terminal prochainTerminal() throws AnalLexErreur {
         terminal = "";
-        while(pointeurLecture < s.length()) {
+        etat = EtatLex.INITIAL;
+
+        // TODO : faire attention boucles infinis
+        while(true) {
             char c = s.charAt(pointeurLecture++);
-            terminal += c;
+//            terminal += c;
     
             switch (etat) {
     
-            case INITIAL:
-                analInitial(c);
-                break;
-    
-            case INTERMEDIAIRE_PLUS:
-                if (c == '+') {
-                    etat = EtatLex.FINAL_OPERATEUR;
+                case INITIAL:
+                    analInitial(c);
+                    break;
+
+                case INTERMEDIAIRE_PLUS: {
+                    Operateur opt = analIntermediairePlus(c);
+                    if(opt != null) return opt;
+                    break;
                 }
-                else {
-                    return new Addition(s);
+                case FINAL_OPERATEUR: {
+                    Operateur opt = analFinalOperateur(c);
+                    if(opt != null) return opt;
+                    break;
                 }
-                break;
-    
-            case FINAL_OPERATEUR:
-                break;
-    
-            case FINAL_IDENTIFIANT:
-                break;
-    
-            case INTERMEDIAIRE_IDENTIFIANT:
-                break;
-    
-            case FINAL_LITERAL:
-                break;
+                case INTERMEDIAIRE_IDENTIFIANT: {
+                    analIntermediaireIdentifiant(c);
+                    break;
+                }
+                case FINAL_IDENTIFIANT: {
+                    Operande opd = analFinalIdentifiant(c);
+                    if (opd != null) return opd;
+                    break;
+                }
+                case FINAL_LITERAL: {
+                    Operande opd = analFinalLiteral(c);
+                    if (opd != null) return opd;
+                    break;
+                }
             }
          }
   }

@@ -2,8 +2,6 @@ package app5.Operandes;
 
 public class Identifiant extends Operande {
 
-  String valeur;
-
   public Identifiant(String s) {
     super(s);
     canEval = false;
@@ -17,6 +15,6 @@ public class Identifiant extends Operande {
 
   @Override
   public String toString() {
-    return valeur;
+    return GetChaine();
   }
 }

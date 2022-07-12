@@ -7,6 +7,7 @@ public class Literal extends Operande {
   public Literal(String s) {
     super(s);
     canEval = true;
+    valeur = Integer.parseInt(s);
   }
 
   @Override
@@ -16,6 +17,6 @@ public class Literal extends Operande {
 
   @Override
   public String toString() {
-    return String.valueOf(valeur);
+    return GetChaine();
   }
 }
