@@ -39,7 +39,7 @@ public class AnalLex {
   /** Constructeur pour l'initialisation d'attribut(s)
    */
     public AnalLex(String s) {
-        this.s = s;
+        this.s = s.replaceAll("\\s+","") + ' ';
         uniteLexicales = new ArrayList<Terminal>();
         pointeurLecture = 0;
         etat = EtatLex.INITIAL;
@@ -55,7 +55,7 @@ public class AnalLex {
      */
     public boolean resteTerminal( ) {
         int test = s.length(); // pour tester
-        return pointeurLecture <= (s.length() - 1);
+        return pointeurLecture < (s.length() - 1);
     }
 
     private void analInitial(char c) throws AnalLexErreur {
@@ -121,8 +121,8 @@ public class AnalLex {
             etat = EtatLex.FINAL_IDENTIFIANT;
         } else if(c == '_') {
             throw new AnalLexErreur("Caractere invalide double __: " + c, s, pointeurLecture);
-        } else if(!Character.isLetter(c)) {
-            throw new AnalLexErreur("Caractere invalide impossible de finir avec un _: " + c, s, pointeurLecture);
+        } else {
+            throw new AnalLexErreur("Caractere invalide impossible de finir avec un _", s, --pointeurLecture);
         }
     }
 
@@ -148,12 +148,11 @@ public class AnalLex {
 
         // TODO : faire attention boucles infinis
         while(true) {
-            if(resteTerminal()) {
-                c = s.charAt(pointeurLecture++);
-                terminal += c;
-            }
 
-            switch (etat) {
+            c = s.charAt(pointeurLecture++);
+            terminal += c;
+
+            switch(etat) {
     
                 case INITIAL:
                     analInitial(c);
