@@ -1,6 +1,8 @@
 package app5;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+
 import app5.Operateurs.*;
 
 /** @author Ahmed Khoumsi */
@@ -9,7 +11,8 @@ import app5.Operateurs.*;
  */
 public class AnalLex {
 
-    static final ArrayList<char> operateurs = Arrays.AsList('-', '*', '/', '(', ')'); // '+' a part
+    static ArrayList<Character> operateurs = new ArrayList<>();
+        //Arrays.asList('-', '*', '/', '(', ')'); // '+' a part
 
 // Attributs
     String              s;
@@ -36,6 +39,15 @@ public class AnalLex {
         uniteLexicales = new ArrayList<Terminal>();
         pointeurLecture = 0;
         etat = EtatLex.INITIAL;
+
+        operateurs.add(new Character('-'));
+        operateurs.add(new Character('*'));
+        operateurs.add(new Character('/'));
+        operateurs.add(new Character('('));
+        operateurs.add(new Character(')'));
+
+//        Character[] ops = new Character[] {'-', '*', '/', '(', ')'};
+//        operateurs = Arrays.asList(ops);
     }
 
 
@@ -48,7 +60,7 @@ public class AnalLex {
     }
 
 
-    private void analInitial(char c) {
+    private void analInitial(char c) throws AnalLexErreur {
         if (Character.isLetter(c)) {
             etat = EtatLex.FINAL_IDENTIFIANT;
         }
@@ -66,12 +78,16 @@ public class AnalLex {
         }
     }
 
+    private void analIntermediairePlus(char c) {
+      
+    }
+
   /** prochainTerminal() retourne le prochain terminal
    Cette methode est une implementation d'un AEF
    */
-    public Terminal prochainTerminal( ) {
+    public Terminal prochainTerminal( ) throws AnalLexErreur {
         terminal = "";
-        while(true) {
+        while(pointeurLecture < s.length()) {
             char c = s.charAt(pointeurLecture++);
             terminal += c;
     
@@ -86,7 +102,7 @@ public class AnalLex {
                     etat = EtatLex.FINAL_OPERATEUR;
                 }
                 else {
-                    return new Addition();
+                    return new Addition(s);
                 }
                 break;
     
@@ -114,7 +130,7 @@ public class AnalLex {
 
 
   //Methode principale a lancer pour tester l'analyseur lexical
-  public static void main(String[] args) {
+  public static void main(String[] args) throws AnalLexErreur {
     String toWrite = "";
     System.out.println("Debut d'analyse lexicale");
     if (args.length == 0){
