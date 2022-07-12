@@ -4,7 +4,8 @@ public class Literal extends Operande {
 
   private int valeur;
 
-  public Literal() {
+  public Literal(String s) {
+    super(s);
     canEval = true;
   }
 

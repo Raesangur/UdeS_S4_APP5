@@ -4,7 +4,8 @@ public class Identifiant extends Operande {
 
   String valeur;
 
-  public Identifiant(){
+  public Identifiant(String s) {
+    super(s);
     canEval = false;
   }
 

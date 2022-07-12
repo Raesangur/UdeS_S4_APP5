@@ -1,4 +1,5 @@
 package app5.Operateurs;
+import app5.Terminal;
 
 public abstract class Operateur extends Terminal {
 
