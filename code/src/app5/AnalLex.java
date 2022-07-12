@@ -15,8 +15,7 @@ import javax.crypto.spec.ChaCha20ParameterSpec;
  */
 public class AnalLex {
 
-    static ArrayList<Character> operateurs = new ArrayList<>();
-        //Arrays.asList('-', '*', '/', '(', ')'); // '+' a part
+    static ArrayList<Character> operateurs = new ArrayList<>(); // '+' a part
 
 // Attributs
     String              s;
@@ -88,7 +87,7 @@ public class AnalLex {
         return null;
     }
 
-    private Operateur analFinalOperateur() throws AnalLexErreur {
+    private Terminal analFinalOperateur() throws AnalLexErreur {
         switch (s.charAt(--pointeurLecture - 1)) {
             case '-':
                 return new Soustraction(terminal.substring(0, terminal.length() - 1));
@@ -98,6 +97,10 @@ public class AnalLex {
                 return new Multiplication(terminal.substring(0, terminal.length() - 1));
             case '+':
                 return new PostFixPlus(terminal.substring(0, terminal.length() - 1));
+            case '(':
+                return new Terminal("(");
+            case ')':
+                return new Terminal(")");
             default:
                 throw new AnalLexErreur("Caractere incompatible : " + s.charAt(pointeurLecture), s, pointeurLecture);
         }
@@ -164,7 +167,7 @@ public class AnalLex {
                     break;
                 }
                 case FINAL_OPERATEUR: {
-                    Operateur opt = analFinalOperateur();
+                    Terminal opt = analFinalOperateur();
                     if(opt != null) return opt;
                     break;
                 }
