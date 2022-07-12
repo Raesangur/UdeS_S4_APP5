@@ -60,10 +60,9 @@ public class AnalLex {
 
     private void analInitial(char c) throws AnalLexErreur {
         if (Character.isLetter(c)) {
-            if(Character.isUpperCase(c))
+            if(Character.isLowerCase(c))
                 throw new AnalLexErreur("Caractere initial est une minuscule : " + c, s, pointeurLecture);
             etat = EtatLex.FINAL_IDENTIFIANT;
-            terminal += c;
         }
         else if(Character.isDigit(c)) {
             etat = EtatLex.FINAL_LITERAL;
