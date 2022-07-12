@@ -1,6 +1,6 @@
 package app5.Operandes;
 
-public abstract class Operande {
+public abstract class Operande extends Terminal {
 
   protected Boolean canEval;
 
