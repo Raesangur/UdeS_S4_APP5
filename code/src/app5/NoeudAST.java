@@ -32,8 +32,7 @@ public class NoeudAST extends ElemAST {
   /** Lecture de noeud d'AST
    */
   public String LectAST() {
-    //
-    return null;
+    return "(" + toString() + ")";
   }
 
   @Override
@@ -43,7 +42,7 @@ public class NoeudAST extends ElemAST {
 
   @Override
   public String toString() {
-    return noeudDroit.toString() + operation + noeudGauche.toString();
+    return noeudDroit.toString() + operation.toString() + noeudGauche.toString();
   }
 }
 

@@ -29,8 +29,7 @@ public class FeuilleAST extends ElemAST {
   /** Lecture de chaine de caracteres correspondant a la feuille d'AST
    */
   public String LectAST( ) {
-    //
-    return null;
+    return toString();
   }
 
   public Boolean CanEval() {
@@ -44,7 +43,7 @@ public class FeuilleAST extends ElemAST {
 
   @Override
   public String toString() {
-    return null;
+    return operande.toString();
   }
 
 }
