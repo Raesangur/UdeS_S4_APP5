@@ -21,6 +21,12 @@ public class NoeudAST extends ElemAST {
         this.operation = operation;
     }
 
+    public NoeudAST() {
+        this.operation = null;
+        this.noeudDroit = null;
+        this.noeudGauche = null;
+    }
+
     public NoeudAST(Operateur operation) {
         this.operation = operation;
     }

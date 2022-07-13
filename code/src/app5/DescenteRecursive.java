@@ -18,15 +18,6 @@ public class DescenteRecursive {
     int ptrLect;
     Terminal nextToken;
     Terminal currentToken;
-//    EtatSynt etatSynt;
-
-//    // Enum
-//    enum EtatSynt {
-//        INITIAL,
-//        INTERMEDIRAIRE_OPERATEUR_B,
-//        FINAL_OPERATEUR_B,
-//        OPERANDE,
-//    }
 
     /** Constructeur de DescenteRecursive :
      - recoit en argument le nom du fichier contenant l'expression a analyser
@@ -43,18 +34,26 @@ public class DescenteRecursive {
         nextToken = uniteLexicales.get(ptrLect);
     }
 
-    public ElemAST parseE() {
+    public boolean resteTerminal() {
+        return ptrLect < uniteLexicales.size() - 1;
+    }
+
+    public ElemAST parseE() throws AnalSyntErreur {
         if(currentToken instanceof Operande && nextToken instanceof Operateur) {
             NoeudAST n = new NoeudAST((Operateur) nextToken);
             n.setEnfantGauche(new FeuilleAST((Operande) currentToken));
             scanNextToken();
             n.setEnfantDroit(parseE());
             return n;
-        } else if(nextToken instanceof Operande && currentToken instanceof Operateur && ptrLect > 1) {
-            return new FeuilleAST((Operande) nextToken);
+        } else if(currentToken instanceof Operateur && nextToken instanceof Operande) {
+            if(!resteTerminal())
+                return new FeuilleAST((Operande) nextToken);
+            scanNextToken();
+            return parseE();
+        } else {
+            throw new AnalSyntErreur(".... : " , currentToken);
         }
 
-        return null;
     }
 
 
@@ -70,56 +69,7 @@ public class DescenteRecursive {
 //            throw new AnalSyntErreur("Terminal final invalide : " , nextToken);
 
         return racineAST;
-//        etatSynt = EtatSynt.INITIAL;
-//        int ptrLect = 0;
-//        Terminal terminal;
-
-
-
-//        while(true) {
-//            terminal = uniteLexicales.get(ptrLect++);
-//            if(terminal instanceof Operande) {
-//
-//            } else {
-//                throw new AnalSyntErreur("Terminal initial n'est pas un operande : " , terminal);
-//            }
-
-//            switch (etatSynt) {
-//                case INITIAL:
-//                    if(terminal instanceof Operande) {
-//                        etatSynt = EtatSynt.INTERMEDIRAIRE_OPERATEUR_B;
-//                    } else {
-//                        throw new AnalSyntErreur("Terminal initial n'est pas un operande : " , terminal);
-//                    }
-//                    break;
-//                case INTERMEDIRAIRE_OPERATEUR_B:
-//
-//                    break;
-//                case FINAL_OPERATEUR_B:
-//                    break;
-//                case OPERANDE:
-//                    break;
-//                default:
-//                    return null;
-//        }
-
-
-
     }
-
-//    public void Analyse(NoeudAST n) {
-//        int ptrLect = 0;
-//        Terminal terminal = uniteLexicales.get(ptrLect++);
-//        if(terminal instanceof Operande) {
-//            FeuilleAST f = new FeuilleAST((Operande) terminal);
-//            NoeudAST a = new NoeudAST(uniteLexicales.get(ptrLect));
-//        }
-//    }
-
-
-
-
-
 
 // Methode pour chaque symbole non-terminal de la grammaire retenue
 // ...
