@@ -1,0 +1,2 @@
+Lecture de l'AST trouve : (2+1)
+Evaluation de l'AST trouve : 3

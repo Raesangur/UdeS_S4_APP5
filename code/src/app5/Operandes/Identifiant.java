@@ -15,6 +15,6 @@ public class Identifiant extends Operande {
 
   @Override
   public String toString() {
-    return GetChaine();
+    return getChaine();
   }
 }

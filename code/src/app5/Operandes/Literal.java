@@ -17,6 +17,6 @@ public class Literal extends Operande {
 
   @Override
   public String toString() {
-    return GetChaine();
+    return getChaine();
   }
 }

@@ -18,10 +18,9 @@ public class Terminal {
    */
   public Terminal(String s) {   // arguments possibles
     this.chaine = s;
-    //
   }
 
-  public String GetChaine() {
+  public String getChaine() {
     return chaine;
   }
 }

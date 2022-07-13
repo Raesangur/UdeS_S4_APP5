@@ -1,13 +1,10 @@
 package app5;
 
-import java.io.CharConversionException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
 import app5.Operandes.*;
 import app5.Operateurs.*;
-
-import javax.crypto.spec.ChaCha20ParameterSpec;
 
 /** @author Ahmed Khoumsi */
 
@@ -19,7 +16,6 @@ public class AnalLex {
 
 // Attributs
     String              s;
-    ArrayList<Terminal> uniteLexicales;
     int                 pointeurLecture;
     EtatLex             etat;
     String              terminal;
@@ -39,7 +35,6 @@ public class AnalLex {
    */
     public AnalLex(String s) {
         this.s = s.replaceAll("\\s+","") + ' ';
-        uniteLexicales = new ArrayList<Terminal>();
         pointeurLecture = 0;
         etat = EtatLex.INITIAL;
 
@@ -189,13 +184,17 @@ public class AnalLex {
          }
   }
 
+  public static ArrayList<Terminal> Analyser(String str) throws AnalLexErreur {
+      AnalLex lexical = new AnalLex(str.toString()); // Creation de l'analyseur lexical
+      ArrayList<Terminal> terminaux = new ArrayList<>();
 
-  /** ErreurLex() envoie un message d'erreur lexicale
-   */
-  public void ErreurLex(String s) {
-    //
+      // Execution de l'analyseur lexical
+      while(lexical.resteTerminal()) {
+          terminaux.add(lexical.prochainTerminal());
+      }
+
+      return terminaux;
   }
-
 
   //Methode principale a lancer pour tester l'analyseur lexical
   public static void main(String[] args) throws AnalLexErreur {
@@ -214,7 +213,7 @@ public class AnalLex {
     Terminal t = null;
     while(lexical.resteTerminal()){
       t = lexical.prochainTerminal();
-      toWrite += t.GetChaine() + "\n" ;  // toWrite contient le resultat
+      toWrite += t.getChaine() + "\n" ;  // toWrite contient le resultat
     }				   //    d'analyse lexicale
     System.out.println(toWrite); 	// Ecriture de toWrite sur la console
     Writer w = new Writer(args[1],toWrite); // Ecriture de toWrite dans fichier args[1]
