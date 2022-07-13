@@ -1,2 +1,2 @@
-Lecture de l'AST trouve : (4+3+4+3+5*2+2)
-Evaluation de l'AST trouve : 40
+Lecture de l'AST trouve : ((2*3)+(4+(4+(6+(5+((3*(4*(5*6)))+15))))))
+Evaluation de l'AST trouve : 400

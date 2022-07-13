@@ -9,9 +9,9 @@ import app5.Operateurs.Operateur;
 public class NoeudAST extends ElemAST {
 
     // Attributs
-    protected ElemAST noeudDroit;
-    protected ElemAST noeudGauche;
-    protected Operateur operation;
+    private ElemAST noeudDroit;
+    private ElemAST noeudGauche;
+    private Operateur operation;
 
     /** Constructeur pour l'initialisation d'attributs
      */
@@ -44,18 +44,23 @@ public class NoeudAST extends ElemAST {
         this.noeudGauche = noeudGauche;
     }
 
+    public boolean hasOneChild() {
+        return operation.isUnaire();
+    }
+
     /** Evaluation de noeud d'AST
      */
     public int EvalAST() {
         // TODO: gerer les identifiants et maybe les exceptions des calculs (division par 0)
-        return operation.Calculer(noeudDroit.EvalAST(), noeudGauche.EvalAST());
+        // TODO: gerer les unaires
+        return operation.Calculer(noeudGauche.EvalAST(), noeudDroit.EvalAST());
     }
 
 
     /** Lecture de noeud d'AST
      */
     public String LectAST() {
-        return "(" + toString() + ")";
+        return toString();
     }
 
     @Override
@@ -65,7 +70,9 @@ public class NoeudAST extends ElemAST {
 
     @Override
     public String toString() {
-        return noeudDroit.toString() + operation.toString() + noeudGauche.toString();
+        return "(" + (hasOneChild() ?
+                noeudGauche.toString() + operation.toString() :
+                noeudGauche.toString() + operation.toString() + noeudDroit.toString()) + ")";
     }
 }
 

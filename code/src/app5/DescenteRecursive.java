@@ -3,7 +3,7 @@ package app5;
 /** @author Ahmed Khoumsi */
 
 import app5.Operandes.Operande;
-import app5.Operateurs.Operateur;
+import app5.Operateurs.*;
 
 import java.util.ArrayList;
 
@@ -16,43 +16,80 @@ public class DescenteRecursive {
     // Attributs
     String s;
     int ptrLect;
-    Terminal nextToken;
     Terminal currentToken;
 
     /** Constructeur de DescenteRecursive :
      - recoit en argument le nom du fichier contenant l'expression a analyser
      - pour l'initalisation d'attribut(s)
      */
-    public DescenteRecursive(String in) throws AnalLexErreur {
+    public DescenteRecursive(String in) {
         Reader r = new Reader(in);
         s = r.toString().replaceAll("\\s+","");
         ptrLect = 0;
     }
 
     public void scanNextToken() {
-        currentToken = uniteLexicales.get(ptrLect++);
-        nextToken = uniteLexicales.get(ptrLect);
+        if(resteTerminal())
+            currentToken = uniteLexicales.get(ptrLect++);
+//        else
+//            currentToken = null;
     }
 
     public boolean resteTerminal() {
-        return ptrLect < uniteLexicales.size() - 1;
+        return ptrLect < uniteLexicales.size();
+    }
+
+    public NoeudAST creationNoeudAST(ElemAST elemAST) throws AnalSyntErreur {
+        NoeudAST n = new NoeudAST((Operateur) currentToken);
+        n.setEnfantGauche(elemAST);
+        scanNextToken();
+
+        return n;
+    }
+
+    public ElemAST parseT() throws AnalSyntErreur {
+        ElemAST facteur = parseF();
+        if (currentToken instanceof Multiplication || currentToken instanceof Division) {
+            NoeudAST n = creationNoeudAST(facteur);
+            n.setEnfantDroit(parseT());
+
+            return n;
+        }
+        return facteur;
+    }
+
+    public ElemAST parseF() {
+        ElemAST unaire = parseU();
+        if (currentToken instanceof PostFixPlus) {
+            NoeudAST n = new NoeudAST((Operateur) currentToken);
+            n.setEnfantGauche(unaire);
+//            scanNextToken();
+        }
+        return unaire;
+    }
+
+    public ElemAST parseU() {
+        FeuilleAST operande = new FeuilleAST((Operande) currentToken);
+        scanNextToken();
+        return operande;
     }
 
     public ElemAST parseE() throws AnalSyntErreur {
-        if(currentToken instanceof Operande && nextToken instanceof Operateur) {
-            NoeudAST n = new NoeudAST((Operateur) nextToken);
-            n.setEnfantGauche(new FeuilleAST((Operande) currentToken));
-            scanNextToken();
-            n.setEnfantDroit(parseE());
-            return n;
-        } else if(currentToken instanceof Operateur && nextToken instanceof Operande) {
-            if(!resteTerminal())
-                return new FeuilleAST((Operande) nextToken);
-            scanNextToken();
-            return parseE();
-        } else {
-            throw new AnalSyntErreur(".... : " , currentToken);
+        if(currentToken instanceof Operande) {
+            ElemAST terme = parseT();
+            if(currentToken instanceof Addition || currentToken instanceof Soustraction) {
+                NoeudAST n = creationNoeudAST(terme);
+                n.setEnfantDroit(parseE());
+
+                return n;
+            }
+            return terme;
         }
+        // TODO: gerer les exceptions
+        return null;
+//        else {
+//            throw new AnalSyntErreur(".... : " , currentToken);
+//        }
 
     }
 
@@ -63,7 +100,11 @@ public class DescenteRecursive {
     public ElemAST AnalSynt() throws AnalLexErreur, AnalSyntErreur {
         uniteLexicales = AnalLex.Analyser(s);
         scanNextToken();
+        for (Terminal t : uniteLexicales) {
+            System.out.println(t);
+        }
         ElemAST racineAST = parseE();
+
 
 //        if(ptrLect <= uniteLexicales.size())
 //            throw new AnalSyntErreur("Terminal final invalide : " , nextToken);

@@ -4,6 +4,7 @@ public class PostFixPlus extends Operateur {
 
   public PostFixPlus(String s) {
     super(s);
+    unaire = true;
   }
 
   @Override
