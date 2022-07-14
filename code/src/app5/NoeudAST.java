@@ -53,7 +53,7 @@ public class NoeudAST extends ElemAST {
     public int EvalAST() {
         // TODO: gerer les identifiants et maybe les exceptions des calculs (division par 0)
         // TODO: gerer les unaires
-        return operation.Calculer(noeudGauche.EvalAST(), noeudDroit.EvalAST());
+        return (hasOneChild() ? operation.Calculer(noeudGauche.EvalAST(), 0): operation.Calculer(noeudGauche.EvalAST(), noeudDroit.EvalAST()));
     }
 
 

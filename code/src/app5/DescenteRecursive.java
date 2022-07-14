@@ -61,6 +61,7 @@ public class DescenteRecursive {
         if (currentToken instanceof PostFixPlus) {
             NoeudAST n = new NoeudAST((Operateur) currentToken);
             n.setEnfantGauche(unaire);
+            return n;
         }
         return unaire;
     }
@@ -68,7 +69,6 @@ public class DescenteRecursive {
     public ElemAST parseU() throws AnalSyntErreur {
         if(currentToken.toString() == "(") {
             scanNextToken();
-
             ElemAST n = parseE();
 
             if(!resteTerminal() && currentToken.toString() != ")")
@@ -80,7 +80,6 @@ public class DescenteRecursive {
             scanNextToken();
             return operande;
         }
-
     }
 
     public ElemAST parseE() throws AnalSyntErreur {
@@ -110,7 +109,7 @@ public class DescenteRecursive {
         uniteLexicales = AnalLex.Analyser(s);
         scanNextToken();
         for (Terminal t : uniteLexicales) {
-            System.out.println(t);
+            System.out.print(t);
         }
         ElemAST racineAST = parseE();
 
