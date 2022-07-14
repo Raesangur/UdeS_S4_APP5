@@ -14,8 +14,9 @@ public class DescenteRecursive {
     static ArrayList<Terminal> uniteLexicales;
 
     // Attributs
-    String s;
-    int ptrLect;
+    String   s;
+    String[] ss;
+    int      ptrLect;
     Terminal currentToken;
 
     /** Constructeur de DescenteRecursive :
@@ -24,7 +25,8 @@ public class DescenteRecursive {
      */
     public DescenteRecursive(String in) {
         Reader r = new Reader(in);
-        s = r.toString().replaceAll("\\s+","");
+        s  = r.toString().replaceAll("\\ \\t","");
+        ss = s.split("\\n");
         ptrLect = 0;
     }
 
@@ -73,7 +75,7 @@ public class DescenteRecursive {
             ElemAST n = parseE();
 
             if(!resteTerminal() && currentToken.toString() != ")")
-                throw new AnalSyntErreur("Manque parenthese fermante : " , currentToken);
+                throw new AnalSyntErreur("Manque parenthese fermante : " , currentToken, uniteLexicales, ptrLect);
 
             scanNextToken();
             return n;
@@ -95,22 +97,30 @@ public class DescenteRecursive {
             }
             return terme;
         }
-        throw new AnalSyntErreur("Ce terminal devrait etre une operande : " , currentToken);
+        throw new AnalSyntErreur("Ce terminal devrait etre une operande : " , currentToken, uniteLexicales, ptrLect);
     }
 
 
     /** AnalSynt() effectue l'analyse syntaxique et construit l'AST.
      *    Elle retourne une reference sur la racine de l'AST construit
      */
-    public ElemAST AnalSynt() throws AnalLexErreur, AnalSyntErreur {
-        uniteLexicales = AnalLex.Analyser(s);
-        scanNextToken();
-        for (Terminal t : uniteLexicales) {
-            System.out.println(t.lexicalString());
-        }
-        ElemAST racineAST = parseE();
+    public ArrayList<ElemAST> AnalSynt() throws AnalLexErreur, AnalSyntErreur {
+        ArrayList<ElemAST> elems = new ArrayList<ElemAST>();
+        for(String s : ss) {
+            uniteLexicales = AnalLex.Analyser(s);
+            if (uniteLexicales.size() == 0) {
+                continue;
+            }
+            scanNextToken();
+            for (Terminal t : uniteLexicales) {
+                System.out.println(t.lexicalString());
+            }
+            elems.add(parseE());
+            ptrLect = 0;
 
-        return racineAST;
+            System.out.println("-----------\n");
+        }
+        return elems;
     }
 
     //Methode principale a lancer pour tester l'analyseur syntaxique
@@ -128,13 +138,17 @@ public class DescenteRecursive {
         }
         DescenteRecursive dr = new DescenteRecursive(args[0]);
         try {
-            ElemAST RacineAST = dr.AnalSynt();
-            toWriteLect += "Lecture de l'AST trouve : " + RacineAST.LectAST() + "\n";
-            System.out.println(toWriteLect);
-            toWriteEval += "Evaluation de l'AST trouve : " + RacineAST.EvalAST() + "\n";
-            System.out.println(toWriteEval);
-            Writer w = new Writer(args[1],toWriteLect+toWriteEval); // Ecriture de toWrite
-            // dans fichier args[1]
+            ArrayList<ElemAST> RacinesAST = dr.AnalSynt();
+            for(ElemAST RacineAST : RacinesAST) {
+                System.out.println("Lecture postfix : " + RacineAST.postFix());
+                String writeLect = "Lecture de l'AST trouve : " + RacineAST.LectAST() + "\n";
+                toWriteLect += writeLect;
+                System.out.println(writeLect);
+                String writeEval = "Evaluation de l'AST trouve : " + RacineAST.EvalAST() + "\n";
+                toWriteEval = writeEval;
+                System.out.println(writeEval);
+            }
+            Writer w = new Writer(args[1], toWriteLect + toWriteEval); // Ecriture de toWrite dans fichier args[1]
         } catch (Exception e) {
             System.out.println(e);
             e.printStackTrace();

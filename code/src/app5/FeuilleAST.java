@@ -41,4 +41,6 @@ public class FeuilleAST extends ElemAST {
     return operande.toString();
   }
 
+  @Override
+  public String postFix() { return this.toString(); }
 }

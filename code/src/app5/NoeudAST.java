@@ -68,5 +68,10 @@ public class NoeudAST extends ElemAST {
                 noeudGauche.toString() + operation.toString() :
                 noeudGauche.toString() + operation.toString() + noeudDroit.toString()) + ")";
     }
+
+    @Override
+    public String postFix() {
+        return noeudGauche.postFix() + " " + (!hasOneChild() ? noeudDroit.postFix() : "") + " " + operation.toString();
+    }
 }
 

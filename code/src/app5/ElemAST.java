@@ -22,6 +22,8 @@ public abstract class ElemAST {
     //
   }
 
+  public abstract String postFix();
+
   public abstract String toString();
 
 }

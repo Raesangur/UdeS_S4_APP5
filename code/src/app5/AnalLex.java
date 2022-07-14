@@ -34,7 +34,8 @@ public class AnalLex {
   /** Constructeur pour l'initialisation d'attribut(s)
    */
     public AnalLex(String s) {
-        this.s = s.replaceAll("\\s+","") + ' ';
+        this.s = s.replaceAll("\\s+","");
+        this.s = this.s.replaceAll("\\/\\/.*", "") + ' ';
         pointeurLecture = 0;
         etat = EtatLex.INITIAL;
 
