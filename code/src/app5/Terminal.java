@@ -23,4 +23,9 @@ public class Terminal {
   public String getChaine() {
     return chaine;
   }
+
+  @Override
+  public String toString() {
+    return chaine;
+  }
 }

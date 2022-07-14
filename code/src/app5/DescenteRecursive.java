@@ -31,8 +31,6 @@ public class DescenteRecursive {
     public void scanNextToken() {
         if(resteTerminal())
             currentToken = uniteLexicales.get(ptrLect++);
-//        else
-//            currentToken = null;
     }
 
     public boolean resteTerminal() {
@@ -58,20 +56,31 @@ public class DescenteRecursive {
         return facteur;
     }
 
-    public ElemAST parseF() {
+    public ElemAST parseF() throws AnalSyntErreur {
         ElemAST unaire = parseU();
         if (currentToken instanceof PostFixPlus) {
             NoeudAST n = new NoeudAST((Operateur) currentToken);
             n.setEnfantGauche(unaire);
-//            scanNextToken();
         }
         return unaire;
     }
 
-    public ElemAST parseU() {
-        FeuilleAST operande = new FeuilleAST((Operande) currentToken);
-        scanNextToken();
-        return operande;
+    public ElemAST parseU() throws AnalSyntErreur {
+        if(currentToken.toString() == "(") {
+            scanNextToken();
+
+            ElemAST n = parseE();
+
+            if(!resteTerminal() && currentToken.toString() != ")")
+                throw new AnalSyntErreur("Manque parenthese fermante : " , currentToken);
+            scanNextToken();
+            return n;
+        } else {
+            FeuilleAST operande = new FeuilleAST((Operande) currentToken);
+            scanNextToken();
+            return operande;
+        }
+
     }
 
     public ElemAST parseE() throws AnalSyntErreur {
