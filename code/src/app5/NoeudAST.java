@@ -52,7 +52,6 @@ public class NoeudAST extends ElemAST {
      */
     public int EvalAST() {
         // TODO: gerer les identifiants et maybe les exceptions des calculs (division par 0)
-        // TODO: gerer les unaires
         return (hasOneChild() ? operation.Calculer(noeudGauche.EvalAST(), 0): operation.Calculer(noeudGauche.EvalAST(), noeudDroit.EvalAST()));
     }
 
@@ -61,11 +60,6 @@ public class NoeudAST extends ElemAST {
      */
     public String LectAST() {
         return toString();
-    }
-
-    @Override
-    public ElemAST AnalSynt() {
-        return null;
     }
 
     @Override

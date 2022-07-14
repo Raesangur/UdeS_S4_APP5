@@ -16,7 +16,7 @@ public class Terminal {
   /** Un ou deux constructeurs (ou plus, si vous voulez)
    *   pour l'initalisation d'attributs
    */
-  public Terminal(String s) {   // arguments possibles
+  public Terminal(String s) {
     this.chaine = s;
   }
 

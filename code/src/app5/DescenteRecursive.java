@@ -83,7 +83,7 @@ public class DescenteRecursive {
     }
 
     public ElemAST parseE() throws AnalSyntErreur {
-        if(currentToken instanceof Operande) {
+        if(currentToken instanceof Operande || currentToken.toString() == "(") {
             ElemAST terme = parseT();
             if(currentToken instanceof Addition || currentToken instanceof Soustraction) {
                 NoeudAST n = creationNoeudAST(terme);
@@ -92,12 +92,9 @@ public class DescenteRecursive {
                 return n;
             }
             return terme;
+        } else {
+            throw new AnalSyntErreur("Ce terminal devrait etre une operande : " , currentToken);
         }
-        // TODO: gerer les exceptions
-        return null;
-//        else {
-//            throw new AnalSyntErreur(".... : " , currentToken);
-//        }
 
     }
 
@@ -113,27 +110,8 @@ public class DescenteRecursive {
         }
         ElemAST racineAST = parseE();
 
-
-//        if(ptrLect <= uniteLexicales.size())
-//            throw new AnalSyntErreur("Terminal final invalide : " , nextToken);
-
         return racineAST;
     }
-
-// Methode pour chaque symbole non-terminal de la grammaire retenue
-// ...
-// ...
-
-
-
-    /** ErreurSynt() envoie un message d'erreur syntaxique
-     */
-    public void ErreurSynt(String s)
-    {
-        //
-    }
-
-
 
     //Methode principale a lancer pour tester l'analyseur syntaxique
     public static void main(String[] args) throws AnalLexErreur {

@@ -37,11 +37,6 @@ public class FeuilleAST extends ElemAST {
   }
 
   @Override
-  public ElemAST AnalSynt() {
-    return null;
-  }
-
-  @Override
   public String toString() {
     return operande.toString();
   }

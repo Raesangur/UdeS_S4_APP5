@@ -1,2 +1,2 @@
-Lecture de l'AST trouve : (2++)
-Evaluation de l'AST trouve : 3
+Lecture de l'AST trouve : (U_x–*(W_z/35))
+Evaluation de l'AST trouve : 0
