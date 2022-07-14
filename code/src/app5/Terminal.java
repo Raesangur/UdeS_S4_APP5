@@ -24,8 +24,16 @@ public class Terminal {
     return chaine;
   }
 
+  public String getNom() {
+    return "Token:\t\t\t";
+  }
+
   @Override
   public String toString() {
     return chaine;
   }
+
+  public String lexicalString() {return getNom() + getChaine();}
+  public String syntaxicString() {return getChaine(); };
+
 }

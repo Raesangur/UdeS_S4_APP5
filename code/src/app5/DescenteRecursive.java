@@ -61,6 +61,7 @@ public class DescenteRecursive {
         if (currentToken instanceof PostFixPlus) {
             NoeudAST n = new NoeudAST((Operateur) currentToken);
             n.setEnfantGauche(unaire);
+            scanNextToken();
             return n;
         }
         return unaire;
@@ -73,6 +74,7 @@ public class DescenteRecursive {
 
             if(!resteTerminal() && currentToken.toString() != ")")
                 throw new AnalSyntErreur("Manque parenthese fermante : " , currentToken);
+
             scanNextToken();
             return n;
         } else {
@@ -92,10 +94,8 @@ public class DescenteRecursive {
                 return n;
             }
             return terme;
-        } else {
-            throw new AnalSyntErreur("Ce terminal devrait etre une operande : " , currentToken);
         }
-
+        throw new AnalSyntErreur("Ce terminal devrait etre une operande : " , currentToken);
     }
 
 
@@ -106,7 +106,7 @@ public class DescenteRecursive {
         uniteLexicales = AnalLex.Analyser(s);
         scanNextToken();
         for (Terminal t : uniteLexicales) {
-            System.out.print(t);
+            System.out.println(t.lexicalString());
         }
         ElemAST racineAST = parseE();
 

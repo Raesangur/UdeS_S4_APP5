@@ -11,7 +11,6 @@ public abstract class Operande extends Terminal {
   }
 
   public abstract int EvalElem();
-  public abstract String toString();
 
   public Boolean GetCanEval() {
     return canEval;

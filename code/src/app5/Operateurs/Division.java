@@ -16,4 +16,9 @@ public class Division extends Operateur {
   public String toString() {
     return "/";
   }
+
+  @Override
+  public String getNom() {
+    return "Division:\t\t";
+  }
 }

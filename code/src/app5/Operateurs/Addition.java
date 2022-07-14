@@ -15,4 +15,9 @@ public class Addition extends Operateur {
   public String toString() {
     return "+";
   }
+
+  @Override
+  public String getNom() {
+    return "Addition:\t\t";
+  }
 }

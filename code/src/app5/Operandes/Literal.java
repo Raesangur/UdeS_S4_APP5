@@ -16,7 +16,7 @@ public class Literal extends Operande {
   }
 
   @Override
-  public String toString() {
-    return getChaine();
+  public String getNom() {
+    return "Nombre:\t\t\t";
   }
 }

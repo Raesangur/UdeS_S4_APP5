@@ -104,7 +104,7 @@ public class AnalLex {
     private Operande analFinalIdentifiant(char c) {
         if (c == '_') {
             etat = EtatLex.INTERMEDIAIRE_IDENTIFIANT;
-        } else if(Character.isDigit(c) || operateurs.contains(c) || c == '+') {
+        } else if(!Character.isLetter(c)) {
             pointeurLecture--;
             return new Identifiant(terminal.substring(0, terminal.length() - 1));
         }

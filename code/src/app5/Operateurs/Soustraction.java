@@ -15,4 +15,9 @@ public class Soustraction extends Operateur {
   public String toString() {
     return "-";
   }
+
+  @Override
+  public String getNom() {
+    return "Soustraction:\t";
+  }
 }

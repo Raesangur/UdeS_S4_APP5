@@ -15,4 +15,9 @@ public class Multiplication extends Operateur {
   public String toString() {
     return "*";
   }
+
+  @Override
+  public String getNom() {
+    return "Multiplication:\t";
+  }
 }

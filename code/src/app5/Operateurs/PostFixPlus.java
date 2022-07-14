@@ -16,4 +16,9 @@ public class PostFixPlus extends Operateur {
   public String toString() {
     return "++";
   }
+
+  @Override
+  public String getNom() {
+    return "Incrementation: ";
+  }
 }
