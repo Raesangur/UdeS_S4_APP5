@@ -1,7 +1,5 @@
 package app5;
 
-/** @author Ahmed Khoumsi */
-
 import app5.Operandes.Operande;
 
 /** Classe representant une feuille d'AST
@@ -25,15 +23,10 @@ public class FeuilleAST extends ElemAST {
     return operande.EvalElem();
   }
 
-
   /** Lecture de chaine de caracteres correspondant a la feuille d'AST
    */
   public String LectAST( ) {
     return toString();
-  }
-
-  public Boolean CanEval() {
-    return operande.GetCanEval();
   }
 
   @Override

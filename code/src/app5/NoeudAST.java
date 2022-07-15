@@ -1,7 +1,5 @@
 package app5;
 
-/** @author Ahmed Khoumsi */
-
 import app5.Operateurs.Operateur;
 
 /** Classe representant une feuille d'AST
@@ -11,29 +9,12 @@ public class NoeudAST extends ElemAST {
     // Attributs
     private ElemAST noeudDroit;
     private ElemAST noeudGauche;
-    private Operateur operation;
+    private final Operateur operation;
 
     /** Constructeur pour l'initialisation d'attributs
      */
-    public NoeudAST(ElemAST noeudDroit, ElemAST noeudGauche, Operateur operation) {
-        this.noeudDroit = noeudDroit;
-        this.noeudGauche = noeudGauche;
-        this.operation = operation;
-    }
-
-    public NoeudAST() {
-        this.operation = null;
-        this.noeudDroit = null;
-        this.noeudGauche = null;
-    }
-
     public NoeudAST(Operateur operation) {
         this.operation = operation;
-    }
-
-    public void setEnfants(ElemAST noeudDroit, ElemAST noeudGauche) {
-        this.noeudDroit = noeudDroit;
-        this.noeudGauche = noeudGauche;
     }
 
     public void setEnfantDroit(ElemAST noeudDroit) {

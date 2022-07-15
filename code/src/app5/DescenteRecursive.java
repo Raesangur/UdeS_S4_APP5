@@ -1,6 +1,5 @@
 package app5;
 
-/** @author Ahmed Khoumsi */
 
 import app5.Operandes.Operande;
 import app5.Operateurs.*;
@@ -39,7 +38,7 @@ public class DescenteRecursive {
         return ptrLect < uniteLexicales.size();
     }
 
-    public NoeudAST creationNoeudAST(ElemAST elemAST) throws AnalSyntErreur {
+    public NoeudAST creationNoeudAST(ElemAST elemAST) {
         NoeudAST n = new NoeudAST((Operateur) currentToken);
         n.setEnfantGauche(elemAST);
         scanNextToken();
@@ -70,11 +69,11 @@ public class DescenteRecursive {
     }
 
     public ElemAST parseU() throws AnalSyntErreur {
-        if(currentToken.toString() == "(") {
+        if(currentToken.toString().equals("(")) {
             scanNextToken();
             ElemAST n = parseE();
 
-            if(!resteTerminal() && currentToken.toString() != ")")
+            if(!resteTerminal() && !currentToken.toString().equals(")"))
                 throw new AnalSyntErreur("Manque parenthese fermante : " , currentToken, uniteLexicales, ptrLect);
 
             scanNextToken();
@@ -87,7 +86,7 @@ public class DescenteRecursive {
     }
 
     public ElemAST parseE() throws AnalSyntErreur {
-        if(currentToken instanceof Operande || currentToken.toString() == "(") {
+        if(currentToken instanceof Operande || currentToken.toString().equals("(")) {
             ElemAST terme = parseT();
             if(currentToken instanceof Addition || currentToken instanceof Soustraction) {
                 NoeudAST n = creationNoeudAST(terme);
@@ -105,7 +104,7 @@ public class DescenteRecursive {
      *    Elle retourne une reference sur la racine de l'AST construit
      */
     public ArrayList<ElemAST> AnalSynt() throws AnalLexErreur, AnalSyntErreur {
-        ArrayList<ElemAST> elems = new ArrayList<ElemAST>();
+        ArrayList<ElemAST> elems = new ArrayList<>();
         for(String s : ss) {
             uniteLexicales = AnalLex.Analyser(s);
             if (uniteLexicales.size() == 0) {
@@ -124,7 +123,7 @@ public class DescenteRecursive {
     }
 
     //Methode principale a lancer pour tester l'analyseur syntaxique
-    public static void main(String[] args) throws AnalLexErreur {
+    public static void main(String[] args) {
         String toWriteLect = "";
         String toWriteEval = "";
 

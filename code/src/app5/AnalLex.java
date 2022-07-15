@@ -6,10 +6,7 @@ import java.util.Arrays;
 import app5.Operandes.*;
 import app5.Operateurs.*;
 
-/** @author Ahmed Khoumsi */
-
-/** Cette classe effectue l'analyse lexicale
- */
+/* Cette classe effectue l'analyse lexicale */
 public class AnalLex {
 
     static ArrayList<Character> operateurs = new ArrayList<>(); // '+' a part
@@ -35,7 +32,7 @@ public class AnalLex {
    */
     public AnalLex(String s) {
         this.s = s.replaceAll("\\s+","");
-        this.s = this.s.replaceAll("\\/\\/.*", "") + ' ';
+        this.s = this.s.replaceAll("//.*", "") + ' ';
         pointeurLecture = 0;
         etat = EtatLex.INITIAL;
 
@@ -49,7 +46,6 @@ public class AnalLex {
      true s'il reste encore au moins un terminal qui n'a pas ete retourne
      */
     public boolean resteTerminal( ) {
-        int test = s.length(); // pour tester
         return pointeurLecture < (s.length() - 1);
     }
 
@@ -143,12 +139,11 @@ public class AnalLex {
     public Terminal prochainTerminal() throws AnalLexErreur {
         terminal = "";
         etat = EtatLex.INITIAL;
-        char c = ' ';
 
         // TODO : faire attention boucles infinis
         while(true) {
 
-            c = s.charAt(pointeurLecture++);
+            char c = s.charAt(pointeurLecture++);
             terminal += c;
 
             switch(etat) {
@@ -163,9 +158,7 @@ public class AnalLex {
                     break;
                 }
                 case FINAL_OPERATEUR: {
-                    Terminal opt = analFinalOperateur();
-                    if(opt != null) return opt;
-                    break;
+                    return analFinalOperateur();
                 }
                 case INTERMEDIAIRE_IDENTIFIANT: {
                     analIntermediaireIdentifiant(c);
@@ -186,7 +179,7 @@ public class AnalLex {
   }
 
   public static ArrayList<Terminal> Analyser(String str) throws AnalLexErreur {
-      AnalLex lexical = new AnalLex(str.toString()); // Creation de l'analyseur lexical
+      AnalLex lexical = new AnalLex(str); // Creation de l'analyseur lexical
       ArrayList<Terminal> terminaux = new ArrayList<>();
 
       // Execution de l'analyseur lexical
@@ -211,7 +204,7 @@ public class AnalLex {
     AnalLex lexical = new AnalLex(r.toString()); // Creation de l'analyseur lexical
 
     // Execution de l'analyseur lexical
-    Terminal t = null;
+    Terminal t;
     while(lexical.resteTerminal()){
       t = lexical.prochainTerminal();
       toWrite += t.getChaine() + "\n" ;  // toWrite contient le resultat
