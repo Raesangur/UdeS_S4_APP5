@@ -1,4 +1,6 @@
-package app5;
+package app5.Exceptions;
+
+import app5.Terminal;
 
 import java.util.ArrayList;
 

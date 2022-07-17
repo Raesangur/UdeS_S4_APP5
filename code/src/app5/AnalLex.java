@@ -3,6 +3,7 @@ package app5;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import app5.Exceptions.AnalLexErreur;
 import app5.Operandes.*;
 import app5.Operateurs.*;
 

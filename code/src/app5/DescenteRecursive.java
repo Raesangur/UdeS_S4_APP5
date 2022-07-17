@@ -1,6 +1,8 @@
 package app5;
 
 
+import app5.Exceptions.AnalLexErreur;
+import app5.Exceptions.AnalSyntErreur;
 import app5.Operandes.Operande;
 import app5.Operateurs.*;
 
@@ -96,7 +98,7 @@ public class DescenteRecursive {
             }
             return terme;
         }
-        throw new AnalSyntErreur("Ce terminal devrait etre une operande : " , currentToken, uniteLexicales, ptrLect);
+        throw new AnalSyntErreur("Ce terminal devrait etre une operande ou une parenthese ouvrante : " , currentToken, uniteLexicales, ptrLect);
     }
 
 

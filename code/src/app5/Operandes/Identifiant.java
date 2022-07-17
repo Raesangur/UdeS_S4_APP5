@@ -1,16 +1,16 @@
 package app5.Operandes;
 
+import app5.Exceptions.IdentifiantException;
+
 public class Identifiant extends Operande {
 
     public Identifiant(String s) {
         super(s);
-        canEval = false;
     }
 
     @Override
-    public int EvalElem() {
-        // TODO: dealer avec la valeur d'un identifiant
-        return 0;
+    public int EvalElem() throws IdentifiantException {
+        throw new IdentifiantException(getChaine());
     }
 
     @Override

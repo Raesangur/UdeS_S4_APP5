@@ -1,4 +1,4 @@
-package app5;
+package app5.Exceptions;
 
 public class AnalLexErreur extends Exception {
     public AnalLexErreur(String msg, String s, int pointeur) {

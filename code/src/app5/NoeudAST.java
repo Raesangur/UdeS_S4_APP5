@@ -1,5 +1,6 @@
 package app5;
 
+import app5.Exceptions.IdentifiantException;
 import app5.Operateurs.Operateur;
 
 /** Classe representant une feuille d'AST
@@ -31,9 +32,17 @@ public class NoeudAST extends ElemAST {
 
     /** Evaluation de noeud d'AST
      */
-    public int EvalAST() {
+    public int EvalAST() throws IdentifiantException {
         // TODO: gerer les identifiants et maybe les exceptions des calculs (division par 0)
-        return (hasOneChild() ? operation.Calculer(noeudGauche.EvalAST(), 0): operation.Calculer(noeudGauche.EvalAST(), noeudDroit.EvalAST()));
+        int val = 0;
+        try {
+            val = (hasOneChild() ? operation.Calculer(noeudGauche.EvalAST(), 0):
+                                       operation.Calculer(noeudGauche.EvalAST(), noeudDroit.EvalAST()));
+        } catch (IdentifiantException e) {
+            System.out.println(e.getMessage());
+            return 1;
+        }
+        return val;
     }
 
 
