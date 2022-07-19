@@ -1,0 +1,49 @@
+enum state:
+{
+	initial,
+	chiffre,
+	lettre
+};
+
+function automate(string phrase) -> terminal:
+{
+	string    term = "";
+	string.it iter = phrase.begin();
+	state     etat = initial;
+
+	#infinite
+	loop(true):
+	{
+		char current = *iter++;
+		term        += current;
+
+		switch(etat):
+		{
+			case initial:
+			{
+				if (char.isDigit(current)):
+					etat = chiffre;
+				else if (char.isAlpha(current)):
+					etat = lettre;
+				else:
+					throw Erreur();
+			};
+			case chiffre:
+			{
+				if (!char.isDigit(current)):
+				{
+					inter--;
+					return term;
+				}
+			};
+			case lettre:
+			{
+				if (!char.isAlpha(current)):
+				{
+					inter--;
+					return term;
+				}
+			};
+		};
+	};
+};
