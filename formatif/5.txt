@@ -1,0 +1,47 @@
+include "elemAST.pp"
+
+public class Leaf (Elem):
+{
+	int value = 0;
+
+public:
+	#default
+	function Leaf(int val): (value = val);
+
+	#inline
+	function Value() -> int:
+		return value;
+
+	#override
+	function to_string() -> string:
+		return value.to_string();
+};
+
+public class Node (Elem):
+{
+	static map<function(int, int) -> int, char> ops = {
+		{ '+', function(int a, int b) -> int: {return a + b;}},
+		{ '-', function(int a, int b) -> int: {return a * b;}},
+		{ '/', function(int a, int b) -> int: {return b ? a / b : 0;}},
+		{ '*', function(int a, int b) -> int: {return a * b;}}};
+
+	Leaf& fg;
+	Leaf& fd;
+	char     op;
+	function&(int, int) -> int func;
+
+public:
+	#default
+	function Node(Leaf& fg, Leaf& fd, char op):
+	(fg = fg, fd = fd)
+	{
+		func = ops[op];
+	};
+
+	function eval() -> int:
+		return func(fg.value(), fd.value());
+
+	#override
+	function to_string() -> string:
+		return '(' + fg.to_string() + op + fd.to_string() + ')';
+};

@@ -1,0 +1,66 @@
+include prob5: Leaf, Node
+include prob3: lexical_analysis
+
+static string phrase;
+static Token  current;
+
+function next_token() -> Token:
+{
+	return lexical_analysis(phrase;)
+};
+
+function parse_u() -> Elem:
+{
+	current = next_token();
+	if (current != '(' and !current.isIdentifier()):
+	{
+		throw Error();
+	};
+
+	Elem g = parse_v();
+	if (current == '+'):
+	{
+		Elem d = parse_v();
+		next_token();
+		return Node(d, g, '+');
+	}
+	else:
+		return g;
+};
+
+function parse_v() -> Elem:
+{
+	Elem g = parse_w();
+	if (current == '*'):
+		Elem d = parse_w();
+		next_token();
+		return Node(g, d, '+');
+	else:
+		return g;
+};
+
+function parse_w() -> Elem:
+{
+	if (current.isIdentifier()):
+	{
+		Token c = current;
+		next_token();
+		return Leaf(c);
+	};
+	else if (current == '('):
+	{
+		next_token();
+		Elem e = parse_u();
+		next_token();
+
+		if (current != ')'):
+			throw Error();
+		else:
+		{
+			next_token();
+			return e;
+		};
+	};
+	else:
+		throw Error();
+};

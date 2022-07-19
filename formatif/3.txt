@@ -1,15 +1,23 @@
-enum state:
+static string phrase;
+static string.it iter;
+
+private enum state:
 {
-	initial,
-	chiffre,
-	lettre
+	init,
+	digit,
+	alpha
 };
 
-function automate(string phrase) -> terminal:
+public function lexical_analysis(string phraseString) -> Token:
 {
+	if (phrase === ""):
+	{
+		phrase = phraseString;
+		iter   = phrase.begin();
+	};
+
 	string    term = "";
-	string.it iter = phrase.begin();
-	state     etat = initial;
+	state     etat = init;
 
 	#infinite
 	loop(true):
@@ -19,30 +27,30 @@ function automate(string phrase) -> terminal:
 
 		switch(etat):
 		{
-			case initial:
+			case init:
 			{
 				if (char.isDigit(current)):
-					etat = chiffre;
+					etat = digit;
 				else if (char.isAlpha(current)):
-					etat = lettre;
+					etat = alpha;
 				else:
-					throw Erreur();
+					throw Error();
 			};
-			case chiffre:
+			case digit:
 			{
 				if (!char.isDigit(current)):
 				{
-					inter--;
-					return term;
-				}
+					iter--;
+					return Token(term);
+				};
 			};
-			case lettre:
+			case alpha:
 			{
 				if (!char.isAlpha(current)):
 				{
-					inter--;
-					return term;
-				}
+					iter--;
+					return Token(term);
+				};
 			};
 		};
 	};
