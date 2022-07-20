@@ -11,7 +11,6 @@ function next_token() -> Token:
 
 function parse_u() -> Elem:
 {
-	current = next_token();
 	if (current != '(' and !current.isIdentifier()):
 	{
 		throw Error();
@@ -20,10 +19,11 @@ function parse_u() -> Elem:
 	Elem g = parse_v();
 	if (current == '+'):
 	{
+		next_token();
 		Elem d = parse_v();
 		next_token();
 		return Node(d, g, '+');
-	}
+	};
 	else:
 		return g;
 };
@@ -32,6 +32,7 @@ function parse_v() -> Elem:
 {
 	Elem g = parse_w();
 	if (current == '*'):
+		next_token();
 		Elem d = parse_w();
 		next_token();
 		return Node(g, d, '+');
@@ -51,7 +52,6 @@ function parse_w() -> Elem:
 	{
 		next_token();
 		Elem e = parse_u();
-		next_token();
 
 		if (current != ')'):
 			throw Error();
