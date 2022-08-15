@@ -1,0 +1,55 @@
+
+private enum lexical_state:
+{
+	init,
+	letter,
+	digit,
+};
+
+private string    originalString;
+private string.it pointer;
+
+public function lexical_analysis() -> Token:
+{
+	string tokenString;
+	char   currentChar;
+
+	lexical_state state = init;
+	
+	#infinite
+	loop()
+	{
+		tokenString += currentChar = *pointer++;
+
+		switch(state):
+		{
+			case(init):
+			{
+				if(currentChar.is_alpha()):
+					state = letter;
+				else if(currentChar.is_digit()):
+					state = digit;
+				else
+					throw LexicalError("Character is not alphanumerical");
+			};
+
+			case letter:
+			{
+				if(!currentChar.is_alpha()):
+				{
+					pointer--;
+					return Token(--tokenString);
+				};
+			};
+
+			case digit:
+			{
+				if(!currentChar.is_digit()):
+				{
+					pointer--;
+					return Token(--tokenString);
+				};
+			};
+		};
+	};
+};

@@ -1,0 +1,44 @@
+
+#abstract
+class TreeElement:
+{
+    string raw;
+
+    function TreeElement(string raw):
+    {
+        this.raw = raw;
+    };
+};
+
+class Node (TreeElement):
+{
+    private static map<char, function(int a, int b) -> int> operatorMap = {
+        {'+', {return a + b;}},
+        {'-', {return a - b;}},
+        {'*', {return a * b;}},
+        {'/', {return a / b;}}
+    };
+
+    TreeElement left;
+    TreeElement right;
+
+    function Node(string raw, TreeElement l, TreeElement r):
+        TreeElement(raw),
+        left(l), right(r)
+    {};
+
+    function evaluate() -> int:
+    {
+        return operatorMap[raw](left.evaluate(), right.evaluate());
+    };
+};
+
+class Leaf (TreeElement):
+{
+    int value;
+
+    function Leaf(string raw):
+        TreeElement(raw),
+        value(raw.to_int())
+    {};
+};

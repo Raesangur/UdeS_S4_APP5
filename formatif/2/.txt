@@ -1,0 +1,67 @@
+import prob3: lexical_analysis;
+import prob5: Leaf, Node, TreeElement;
+
+
+
+Token currentToken;
+
+private function next_token():
+{
+    currentToken = lexical_analysis();
+}
+
+function parse_u() -> TreeElement:
+{
+    // Considering that the current token is already loaded
+    if (currentToken != '(' && !currentToken.is_identifier()):
+        throw ParseError("First element not compatible with expression");
+
+    TreeElement l = parse_v();
+
+    if (currentToken != '+'):
+    {
+        return l;
+    };
+    else:
+    {
+        next_token();
+        TreeElement r = parse_v();
+
+        return Node('+', l, r);
+    };
+};
+
+
+function parse_v() -> TreeElement:
+{
+    TreeElement l = parse_w();
+
+    if (currentToken != '*'):
+    {
+        return l;
+    };
+    else:
+    {
+        next_token();
+        TreeElement r = parse_w();
+
+        return Node('*', l, r);
+    }
+
+};
+
+function parse_w() -> TreeElement:
+{
+    if (currentToken == '('):
+    {
+        next_token();
+        TreeElement e = parse_u();
+        next_token();
+        return e;
+    };
+
+    // identifier
+    Leaf l(currentToken);
+    next_token();
+    return l;
+};
